@@ -1,0 +1,18 @@
+Package: mosquitto
+Version: 1.4.9-1
+Depends: libc, librt
+Provides: 
+Source: package/mosquitto
+Section: net
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: Karl Palsson <karlp@remake.is>
+Architecture: ar71xx
+Installed-Size: 62473
+Description:  mosquitto is a message broker that supports v3.1 of the MQ Telemetry
+ Transport protocol. MQTT provides a lightweight method for
+ messaging using a publish/subscribe model.
+ 
+ This package also includes some basic support for configuring via UCI
+ This package is built without SSL support

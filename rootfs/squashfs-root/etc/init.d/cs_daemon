@@ -1,0 +1,19 @@
+#!/bin/sh /etc/rc.common
+# Basic init script for mosquitto
+# April 2012, OpenWrt.org
+# Provides support for the cste package, if installed
+
+START=39
+APP=`which cs_daemon`
+
+SERVICE_DAEMONIZE=1
+SERVICE_WRITE_PID=1
+
+start() {
+        service_start $APP 15
+}
+
+stop() {
+        service_stop $APP
+}
+

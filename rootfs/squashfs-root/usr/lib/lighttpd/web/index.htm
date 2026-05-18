@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html">
+<script language="javascript" src="./js/jcommon.js"></script>
+<script language="javascript" src="./js/jquery.min.js"></script>
+<script language="javascript" src="./js/json2.min.js"></script>
+<script language="javascript" src="./js/spec.js"></script>
+</head>
+<body>
+<script>
+var responseJson, v_mobileflag;
+function getUserBrowser()
+{
+	var u = navigator.userAgent;
+	if (u.indexOf('Mobile') > -1)
+		return "mobile";
+	else if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1)
+		return "android";
+	else if (u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1)
+		return "iPhone";	
+	else if (u.indexOf('iPad') > -1)
+		return "iPad";	
+	else
+		return "pc";
+}
+
+function getlgtype(){
+	var postVar = { topicurl : "setting/getMenuModeCfg"};
+    postVar = JSON.stringify(postVar);
+	$.ajax({  
+       	type : "post",  
+        url : " /cgi-bin/cstecgi.cgi",  
+        data : postVar,  
+        async : false,  
+        success : function(Data){
+			responseJson = JSON.parse(Data);
+		}
+    });
+	
+	v_mobileflag=responseJson['MobileFlag'];
+	if(v_mobileflag == 0){
+		window.location.href="/login.asp";
+	}else{
+		var ret=getUserBrowser();
+		if (ret=="mobile"||ret=="android"||ret=="iPhone"||ret=="iPad"){
+			location.href="/mobile/login.asp";
+		}
+		else{
+			window.location.href="/login.asp";
+		}
+	}
+}
+getlgtype();
+</script>
+</body>
+</html>

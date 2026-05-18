@@ -1,0 +1,38 @@
+config rule fwType
+	option drop      1
+
+config rule ipport
+	option enable     0
+	option rules      ''
+	
+config rule mac
+	option enable    0
+	option rules     ''
+
+config rule url
+	option enable    0
+	option rules     ''
+
+config rule vpn
+	option wanping    1
+	option l2tp       1
+	option pptp       1
+	option ipsec      1
+
+config rule portfw
+	option enable    0
+	option rules     ''
+	
+config rule dmz
+	option enable    0
+	option host      ''
+	
+config rule dos
+	option spi        1
+	option portscan   0
+	option synFlood   0
+
+config rule remote
+	option enable     0
+	option port       80
+	

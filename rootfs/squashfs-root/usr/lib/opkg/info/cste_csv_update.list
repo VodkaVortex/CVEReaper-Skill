@@ -1,0 +1,3 @@
+/etc/hotplug.d/iface/80-totolink_update
+/etc/config/cloudupg
+/lib/cste_modules/cloudupdate.so

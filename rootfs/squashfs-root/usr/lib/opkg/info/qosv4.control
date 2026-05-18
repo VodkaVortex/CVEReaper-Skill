@@ -1,0 +1,13 @@
+Package: qosv4
+Version: 1.1f-1
+Depends: libc, tc, iptables-mod-conntrack, iptables-mod-conntrack-extra, iptables-mod-filter, iptables-mod-hashlimit, iptables-mod-iprange, iptables-mod-weburl, iptables-mod-webmon, iptables-mod-bandwidth, iptables-mod-imq, iptables-mod-ipopt, iptables-mod-nat, iptables-utils, iptables-mod-connlimit, kmod-sched
+Provides: 
+Source: package/totolink/smartqos
+Section: TOTOLINK Properties
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: qq 3341249
+Architecture: all
+Installed-Size: 3893
+Description:  An agent script that makes qosv4 configuration simple.

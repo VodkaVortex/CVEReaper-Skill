@@ -1,0 +1,18 @@
+#!/bin/sh
+
+[ "$ACTION" = ifup -o "$ACTION" = ifupdate ] || exit 0
+
+[[ "$INTERFACE" = "wan" || "$INTERFACE" = "lan" ]] || exit 0
+
+echo totolink cloud update check. > /dev/console
+
+tcpcheck 3 update.carystudio.com:80 > /tmp/.tcpcheck.tmp
+sleep 1
+
+alive=`cat /tmp/.tcpcheck.tmp  | grep alive | wc -l`
+rm /tmp/.tcpcheck.tmp
+
+if [ $alive -eq 1 ]; then 
+	cste_pub -h 127.0.0.1 -t totolink/router/setting/CloudSrvTimeSchedual -m "{}"
+fi
+

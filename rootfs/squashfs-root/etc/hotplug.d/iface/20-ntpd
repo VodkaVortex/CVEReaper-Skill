@@ -1,0 +1,10 @@
+#!/bin/sh
+
+[ "$ACTION" = ifup -o "$ACTION" = ifupdate ] || exit 0
+
+
+[[ "$INTERFACE" = "wan" || "$INTERFACE" = "lan" ]] || exit 0
+
+echo sysntpd. > /dev/console
+/etc/init.d/sysntpd restart
+

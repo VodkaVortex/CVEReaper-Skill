@@ -1,0 +1,38 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2011 OpenWrt.org
+
+SERVICE_USE_PID=1
+
+START=44
+
+start() {
+	mkdir -m 0755 -p /var/log/lighttpd
+	rm -f /usr/lib/lighttpd/web/js/language.js
+	
+	local lang cnWebSite netWebSite
+	lang=`uci -q get product.custom.lang`
+	cnWebSite=`uci -q get product.custom.CnWebSite`
+	netWebSite=`uci -q get product.custom.NetWebSite`
+	
+	if [ $lang = cn ]; then
+	    ln -s /usr/lib/lighttpd/web/js/language_cn.js /usr/lib/lighttpd/web/js/language.js
+	    uci -q set product.custom.customerUrl=$cnWebSite
+	elif [ $lang = cnt ]; then
+	    ln -s /usr/lib/lighttpd/web/js/language_cnt.js /usr/lib/lighttpd/web/js/language.js
+	    uci set product.custom.customerUrl=$netWebSite
+	elif [ $lang = en ]; then
+	    ln -s /usr/lib/lighttpd/web/js/language_en.js /usr/lib/lighttpd/web/js/language.js
+	    uci set product.custom.customerUrl=$netWebSite
+	else
+	    ln -s /usr/lib/lighttpd/web/js/language_en.js /usr/lib/lighttpd/web/js/language.js
+	    uci set product.custom.customerUrl=$netWebSite
+	fi
+	uci commit product
+	
+	service_start /usr/sbin/lighttpd -f /etc/lighttpd/lighttpd.conf
+}
+
+stop() {
+	service_stop /usr/sbin/lighttpd
+}
+

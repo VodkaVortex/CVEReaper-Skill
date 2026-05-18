@@ -1,0 +1,25 @@
+#!/bin/sh /etc/rc.common
+# Basic init script for mosquitto
+# April 2012, OpenWrt.org
+# Provides support for the cste package, if installed
+
+START=38
+APP=`which cste`
+
+SERVICE_DAEMONIZE=1
+SERVICE_WRITE_PID=1
+
+start() {
+        service_start $APP -h 127.0.0.1 -t totolink/router/#
+}
+
+stop() {
+        killall cstecgi.cgi
+        service_stop $APP
+}
+
+restart() {
+        stop
+        start
+}
+

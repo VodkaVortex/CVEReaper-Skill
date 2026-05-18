@@ -1,0 +1,4 @@
+/usr/sbin/miniupnpd
+/etc/config/upnpd
+/etc/hotplug.d/iface/50-miniupnpd
+/etc/init.d/miniupnpd

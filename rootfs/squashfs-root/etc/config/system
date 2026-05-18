@@ -1,0 +1,38 @@
+config system main
+       option hostname     'TOTOLINK'
+       option timezone     'UTC+0'
+       option log_size     16
+config timeserver ntp
+       option server	'pool.ntp.org -h cn.pool.ntp.org -h europe.pool.ntp.org'
+       option enabled 1
+       option enable_server 0
+       option sync_time 0
+       option time_flag 0
+config sys ddns
+       option enabled 0
+       option provider 3322.org
+       option domain 
+       option account 
+       option password  
+config sys opmode
+       option opmode_support 'BR;RPT;WISP;GW'
+       option mode 1
+       option wispinface '0'
+       option wifidualband '0'
+       option lanifname 'eth0 eth1'
+       option wanifname 'eth0'
+config sys rebootsch
+       option switch 0
+       option week 255
+       option hour 0
+       option minute 0
+config sys wifischedule
+       option enable 0
+       option num 10
+       option rules '0,255,0,0,0,0;0,255,0,0,0,0;0,255,0,0,0,0;0,255,0,0,0,0;0,255,0,0,0,0;0,255,0,0,0,0;0,255,0,0,0,0;0,255,0,0,0,0;0,255,0,0,0,0;0,255,0,0,0,0'
+config sys syslog
+       option switch 0
+config sys web
+       option x_Setting 0
+config sys telnetd
+       option enable 0

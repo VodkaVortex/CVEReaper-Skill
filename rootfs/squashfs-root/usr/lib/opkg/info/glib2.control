@@ -1,0 +1,13 @@
+Package: glib2
+Version: 2.34.3-1
+Depends: libc, zlib, libpthread, libffi
+Provides: 
+Source: qca_2.7/feeds/printing/libs/glib2
+Section: libs
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: OpenWrt Developers Team <openwrt-devel@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 865646
+Description:  The GLib library of C routines

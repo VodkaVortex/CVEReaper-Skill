@@ -1,0 +1,13 @@
+Package: eth_mac
+Version: 1
+Depends: libc
+Provides: 
+Source: package/totolink/eth_mac
+Section: TOTOLINK Properties
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: OpenWrt Developers Team <openwrt-devel@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 3286
+Description:  An program to config eth mac.

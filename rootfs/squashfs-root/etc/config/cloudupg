@@ -1,0 +1,5 @@
+config cloudupg 'main'
+	option host	  'update.carystudio.com'
+	option path	  '/device/upgrade/check'
+	option port	  80
+	

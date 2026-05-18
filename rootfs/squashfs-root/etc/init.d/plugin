@@ -1,0 +1,46 @@
+#!/bin/sh /etc/rc.common
+# Basic init script for mosquitto
+# April 2012, OpenWrt.org
+# Provides support for the cste package, if installed
+
+START=91
+
+SERVICE_DAEMONIZE=1
+
+start() {
+	# wait userdata mount
+	sleep 3
+	
+	for plugin_name in `ls /userdata/plugin/`
+    do
+        if [ x"$plugin_name" != x"." -a x"$plugin_name" != x".." ];then
+            if [ -d /userdata/plugin/$plugin_name ];then
+                [ -f /userdata/plugin/$plugin_name/install.sh ] && /userdata/plugin/$plugin_name/install.sh
+            fi
+        fi
+    done
+	
+	for exec_sh in /etc/init.d/plugin_*
+	do
+		if [ -f $exec_sh ]
+		then
+			$exec_sh start
+		fi
+	done
+}
+
+stop() {
+	for exec_sh in /etc/init.d/plugin_*
+	do
+		if [ -f $exec_sh ]
+		then
+			$exec_sh stop
+		fi
+	done
+}
+
+restart() {
+	stop
+	start
+}
+

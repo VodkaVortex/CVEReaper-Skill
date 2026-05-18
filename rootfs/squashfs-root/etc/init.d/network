@@ -1,0 +1,75 @@
+#!/bin/sh /etc/rc.common
+
+START=20
+STOP=90
+
+SERVICE_DAEMONIZE=1
+SERVICE_WRITE_PID=1
+
+vlan_init() {
+	for i in 0 1 2 3 4 5
+	do
+	 	echo "[switch config port $i :ingress-disable]"
+		ssdk_sh portVlan ingress set $i disable
+		echo "[switch config port $i :egress-untagged]"
+		ssdk_sh portVlan egress  set $i untagged
+	done
+}
+
+start() {
+	touch /var/run/network.lock
+	
+	stop
+	[ -e /proc/sys/kernel/core_pattern ] && {
+		ulimit -c unlimited
+		echo '/tmp/%e.%p.%s.%t.core' > /proc/sys/kernel/core_pattern
+	}
+	service_start /sbin/netifd
+
+	setup_switch() { return 0; }
+
+	include /lib/network
+	setup_switch
+
+	local opmode=$(uci get system.opmode.mode)
+	if [ $opmode = 1 ]; then
+		port_speed.sh
+	fi
+	#sleep 5
+
+	/sbin/wifi down
+	/sbin/wifi up
+
+	#sleep 1
+	if [ $opmode -ne 1 ]; then
+		vlan_init
+	fi
+	
+	/etc/init.d/plugin_hapc restart
+
+	rm -f /var/run/network.lock
+}
+
+restart() {
+	touch /var/run/network.lock
+	ifdown -a
+	sleep 1
+	start
+}
+
+shutdown() {
+	ifdown -a
+	stop
+}
+
+stop() {
+	service_stop /sbin/netifd
+}
+
+reload() {
+	ubus call network reload
+	/sbin/wifi down
+	/sbin/wifi up
+
+	/etc/init.d/hapc restart
+}

@@ -1,0 +1,13 @@
+Package: kmod-qca-wifi-perf
+Version: 3.3.8+10.2.3.31-1
+Depends: kernel (=3.3.8-1-2c82765d5082588930ac02de900aa287), libgcc, libc, wireless-tools, librt
+Provides: kmod-qca-wifi
+Source: qca_2.7/feeds/wlan_10_2/qca-wifi
+Section: QCA
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: Qualcomm Atheros
+Architecture: ar71xx
+Installed-Size: 2218442
+Description:  QCA Wireless LAN Driver

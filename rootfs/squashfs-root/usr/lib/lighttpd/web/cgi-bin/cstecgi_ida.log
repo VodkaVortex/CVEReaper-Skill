@@ -1,0 +1,152 @@
+Possible file format: ELF for MIPS (Executable) (/Applications/IDA Professional 9.3.app/Contents/MacOS/loaders/elf.dylib)
+
+  bytes   pages size description
+--------- ----- ---- --------------------------------------------
+   524288    64 8192 allocating memory for b-tree...
+    65536     8 8192 allocating memory for virtual array...
+   262144    32 8192 allocating memory for name pointers...
+-----------------------------------------------------------------
+   851968            total memory allocated
+
+Loading file '/Users/yangshuangning/IDA/_TOTOLINK_CS810R/squashfs-root/usr/lib/lighttpd/web/cgi-bin/cstecgi.cgi' into database...
+Detected file format: ELF for MIPS (Executable)
+Assuming __cdecl calling convention by default
+Loading processor module /Applications/IDA Professional 9.3.app/Contents/MacOS/procs/mips.dylib for mipsb...OK
+IDA for 'mipsb' supports memory mapping.
+If you see references to the memory addresses not
+belonging to the program, you may want to use it.
+The memory mapping is available at
+Options, General, Analysis, Memory mapping
+ -> OK
+Autoanalysis subsystem has been initialized.
+  0. Creating a new segment  (00400148-00400160) ... ... OK
+  1. Creating a new segment  (00400000-00400148) ... ... OK
+  2. Creating a new segment  (00400160-00402434) ... ... OK
+  3. Creating a new segment  (00412434-00412578) ... ... OK
+  4. Creating a new segment  (00412578-00412579) ... ... OK
+  5. Creating a new segment  (0041257C-0041262C) ... ... OK
+  6. Creating a new segment  (0041262C-00412648) ... ... OK
+Processing relocations...
+Flushing buffers, please wait...ok
+File '/Users/yangshuangning/IDA/_TOTOLINK_CS810R/squashfs-root/usr/lib/lighttpd/web/cgi-bin/cstecgi.cgi' has been successfully loaded into the database.
+Flushing buffers, please wait...ok
+Hex-Rays Decompiler plugin has been loaded (v9.3.0.251224)
+  The hotkeys are F5: decompile, Ctrl-F5: decompile all.
+
+  Please check the Edit/Plugins menu for more information.
+Using type parser: legacy
+IDA is analysing the input file...
+You may start to explore the input file right now.
+/Users/yangshuangning/VscodeProjects/ida-mcp-main/export_functions.py: unsupported operand type(s) for |: 'types.GenericAlias' and 'NoneType'
+Traceback (most recent call last):
+  File "/Applications/IDA Professional 9.3.app/Contents/MacOS/python/ida_idaapi.py", line 502, in IDAPython_ExecScript
+    exec(code, g)
+  File "/Users/yangshuangning/VscodeProjects/ida-mcp-main/export_functions.py", line 1, in <module>
+    from ida_functions.main import main
+  File "/Users/yangshuangning/VscodeProjects/ida-mcp-main/ida_functions/__init__.py", line 1, in <module>
+    from ida_functions.query import HANDLERS as query_handlers
+  File "/Users/yangshuangning/VscodeProjects/ida-mcp-main/ida_functions/query.py", line 18, in <module>
+    from ida_functions.common import (
+  File "/Users/yangshuangning/VscodeProjects/ida-mcp-main/ida_functions/common.py", line 187, in <module>
+    def _parse_ty(ty: str) -> tuple[bool, int, str] | None:
+TypeError: unsupported operand type(s) for |: 'types.GenericAlias' and 'NoneType'
+ -> OK
+Flushing buffers, please wait...ok
+Unloading IDP module /Applications/IDA Professional 9.3.app/Contents/MacOS/procs/mips.dylib...Possible file format: ELF for MIPS (Executable) (/Applications/IDA Professional 9.3.app/Contents/MacOS/loaders/elf.dylib)
+
+  bytes   pages size description
+--------- ----- ---- --------------------------------------------
+   524288    64 8192 allocating memory for b-tree...
+    65536     8 8192 allocating memory for virtual array...
+   262144    32 8192 allocating memory for name pointers...
+-----------------------------------------------------------------
+   851968            total memory allocated
+
+Loading file '/Users/yangshuangning/IDA/_TOTOLINK_CS810R/squashfs-root/usr/lib/lighttpd/web/cgi-bin/cstecgi.cgi' into database...
+Detected file format: ELF for MIPS (Executable)
+Assuming __cdecl calling convention by default
+Loading processor module /Applications/IDA Professional 9.3.app/Contents/MacOS/procs/mips.dylib for mipsb...OK
+IDA for 'mipsb' supports memory mapping.
+If you see references to the memory addresses not
+belonging to the program, you may want to use it.
+The memory mapping is available at
+Options, General, Analysis, Memory mapping
+ -> OK
+Autoanalysis subsystem has been initialized.
+  0. Creating a new segment  (00400148-00400160) ... ... OK
+  1. Creating a new segment  (00400000-00400148) ... ... OK
+  2. Creating a new segment  (00400160-00402434) ... ... OK
+  3. Creating a new segment  (00412434-00412578) ... ... OK
+  4. Creating a new segment  (00412578-00412579) ... ... OK
+  5. Creating a new segment  (0041257C-0041262C) ... ... OK
+  6. Creating a new segment  (0041262C-00412648) ... ... OK
+Processing relocations...
+Flushing buffers, please wait...ok
+File '/Users/yangshuangning/IDA/_TOTOLINK_CS810R/squashfs-root/usr/lib/lighttpd/web/cgi-bin/cstecgi.cgi' has been successfully loaded into the database.
+Flushing buffers, please wait...ok
+Hex-Rays Decompiler plugin has been loaded (v9.3.0.251224)
+  The hotkeys are F5: decompile, Ctrl-F5: decompile all.
+
+  Please check the Edit/Plugins menu for more information.
+Using type parser: legacy
+IDA is analysing the input file...
+You may start to explore the input file right now.
+/Users/yangshuangning/VscodeProjects/ida-mcp-main/export_functions.py: unsupported operand type(s) for |: 'types.GenericAlias' and 'NoneType'
+Traceback (most recent call last):
+  File "/Applications/IDA Professional 9.3.app/Contents/MacOS/python/ida_idaapi.py", line 502, in IDAPython_ExecScript
+    exec(code, g)
+  File "/Users/yangshuangning/VscodeProjects/ida-mcp-main/export_functions.py", line 1, in <module>
+    from ida_functions.main import main
+  File "/Users/yangshuangning/VscodeProjects/ida-mcp-main/ida_functions/__init__.py", line 1, in <module>
+    from ida_functions.query import HANDLERS as query_handlers
+  File "/Users/yangshuangning/VscodeProjects/ida-mcp-main/ida_functions/query.py", line 18, in <module>
+    from ida_functions.common import (
+  File "/Users/yangshuangning/VscodeProjects/ida-mcp-main/ida_functions/common.py", line 187, in <module>
+    def _parse_ty(ty: str) -> tuple[bool, int, str] | None:
+TypeError: unsupported operand type(s) for |: 'types.GenericAlias' and 'NoneType'
+ -> OK
+Flushing buffers, please wait...ok
+Unloading IDP module /Applications/IDA Professional 9.3.app/Contents/MacOS/procs/mips.dylib...Possible file format: ELF for MIPS (Executable) (/Applications/IDA Professional 9.3.app/Contents/MacOS/loaders/elf.dylib)
+
+  bytes   pages size description
+--------- ----- ---- --------------------------------------------
+   524288    64 8192 allocating memory for b-tree...
+    65536     8 8192 allocating memory for virtual array...
+   262144    32 8192 allocating memory for name pointers...
+-----------------------------------------------------------------
+   851968            total memory allocated
+
+Loading file '/Users/yangshuangning/IDA/_TOTOLINK_CS810R/squashfs-root/usr/lib/lighttpd/web/cgi-bin/cstecgi.cgi' into database...
+Detected file format: ELF for MIPS (Executable)
+Assuming __cdecl calling convention by default
+Loading processor module /Applications/IDA Professional 9.3.app/Contents/MacOS/procs/mips.dylib for mipsb...OK
+IDA for 'mipsb' supports memory mapping.
+If you see references to the memory addresses not
+belonging to the program, you may want to use it.
+The memory mapping is available at
+Options, General, Analysis, Memory mapping
+ -> OK
+Autoanalysis subsystem has been initialized.
+  0. Creating a new segment  (00400148-00400160) ... ... OK
+  1. Creating a new segment  (00400000-00400148) ... ... OK
+  2. Creating a new segment  (00400160-00402434) ... ... OK
+  3. Creating a new segment  (00412434-00412578) ... ... OK
+  4. Creating a new segment  (00412578-00412579) ... ... OK
+  5. Creating a new segment  (0041257C-0041262C) ... ... OK
+  6. Creating a new segment  (0041262C-00412648) ... ... OK
+Processing relocations...
+Flushing buffers, please wait...ok
+File '/Users/yangshuangning/IDA/_TOTOLINK_CS810R/squashfs-root/usr/lib/lighttpd/web/cgi-bin/cstecgi.cgi' has been successfully loaded into the database.
+Flushing buffers, please wait...ok
+Hex-Rays Decompiler plugin has been loaded (v9.3.0.251224)
+  The hotkeys are F5: decompile, Ctrl-F5: decompile all.
+
+  Please check the Edit/Plugins menu for more information.
+Using type parser: legacy
+IDA is analysing the input file...
+You may start to explore the input file right now.
+[*] pipe loop started, pipe=/tmp/ida_mcp_cstecgi_2.sock
+Propagating type information...
+Function argument information has been propagated
+lumina: Signature decryption failed with code: -2
+The initial autoanalysis has been finished.

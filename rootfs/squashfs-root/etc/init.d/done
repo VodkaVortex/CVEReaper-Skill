@@ -1,0 +1,37 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006 OpenWrt.org
+
+START=95
+
+update_version_val() {	
+	[ -f /tmp/sysinfo/svn_num ] && uci set product.custom.svnNum=$(cat /tmp/sysinfo/svn_num)
+	[ -f /tmp/sysinfo/build_date ] && uci set product.custom.buildDate=$(cat /tmp/sysinfo/build_date)
+	[ -f /tmp/sysinfo/build_date_hac ] && uci set product.custom.buildDateHac=$(cat /tmp/sysinfo/build_date_hac)
+	[ -f /tmp/sysinfo/build_date_k7 ] && uci set product.custom.buildDateK7=$(cat /tmp/sysinfo/build_date_k7)
+	[ -f /tmp/sysinfo/product_ver ] && uci set product.custom.softVersion=$(cat /tmp/sysinfo/product_ver).$(cat /tmp/sysinfo/svn_num)
+	##no commit
+}
+
+boot() {
+	local svn_num build_date build_date_hac product_ver
+
+	# Values need to be updated each time an upgrade
+	update_version_val
+
+	local telnetEnabled=$(uci get system.telnetd.enable)
+	[ "$telnetEnabled" = "1" ] && telnetd -l /bin/login <> /dev/null 2>&1
+
+	[ -d /tmp/root ] && {
+		lock /tmp/.switch2jffs
+		firstboot switch2jffs
+		lock -u /tmp/.switch2jffs
+	}
+
+	# process user commands
+	[ -f /etc/rc.local ] && {
+		sh /etc/rc.local
+	}
+
+	. /etc/diag.sh
+	set_state done
+}

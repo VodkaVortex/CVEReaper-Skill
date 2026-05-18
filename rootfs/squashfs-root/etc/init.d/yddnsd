@@ -1,0 +1,30 @@
+#!/bin/sh /etc/rc.common
+# Basic init script for mosquitto
+# April 2012, OpenWrt.org
+# Provides support for the cste package, if installed
+
+START=91
+APP=`which yddnsd`
+
+SERVICE_DAEMONIZE=1
+SERVICE_WRITE_PID=1
+
+start() {
+		enable=$(uci -q get yddns.main.enable)
+		[ "${enable}" = "0" ] && return 1
+
+		rm -f /tmp/ddns_ok
+        service_start $APP
+}
+
+stop() {
+		rm -f /tmp/ddns_ok
+        killall yddns
+        killall noip2
+        service_stop $APP
+}
+
+restart() {
+	stop
+	start
+}

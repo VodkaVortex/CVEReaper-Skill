@@ -1,0 +1,25 @@
+do_sysinfo_generic() {
+	. /lib/totolink_custom.sh
+	
+	local svn_num build_date build_date_hac build_date_k7 product_ver
+
+	[ -z "$PRODUCT_SVN" ] && PRODUCT_SVN="unknow"
+	
+	[ -z "$svn_num" ] && svn_num="$PRODUCT_SVN"
+	[ -z "$build_date" ] && build_date="$BUILD_DATE"
+	[ -z "$build_date_hac" ] && build_date_hac="$BUILD_DATE_HAC"
+	[ -z "$build_date_k7" ] && build_date_k7="$BUILD_DATE_K7"
+	[ -z "$product_ver" ] && product_ver="$PRODUCT_VER"
+
+	echo "$svn_num" > /tmp/sysinfo/svn_num
+	echo "$build_date" > /tmp/sysinfo/build_date
+	echo "$build_date_hac" > /tmp/sysinfo/build_date_hac
+	echo "$build_date_k7" > /tmp/sysinfo/build_date_k7
+	echo "$product_ver" > /tmp/sysinfo/product_ver
+
+	echo "-1" > /tmp/wps_state_flag
+	echo "2" > /tmp/assoc_flag
+	echo "2" > /tmp/assoc_flag_5g
+}
+
+boot_hook_add preinit_main do_sysinfo_generic

@@ -1,0 +1,89 @@
+#!/bin/sh
+
+. /lib/totolink_custom.sh
+
+# Set Default Config
+
+wireless_init() {	
+	if [ $WiFiEncryption -eq 1 ]; then
+		uci -q set wireless.ath0.encryption='psk-mixed+tkip+ccmp'
+		uci -q set wireless.ath0.key=$WiFiPassword
+		if [ $WIFIDUALBAND -eq 1  ]; then
+			uci -q set wireless.ath1.encryption='psk-mixed+tkip+ccmp'
+			uci -q set wireless.ath1.key=$WiFiPassword
+		fi
+	fi
+
+	uci -q set wireless.ath0.wps_flag=$WPS_SUPPORT
+	uci -q set wireless.ath0.wps_pbc=$WPS_SUPPORT
+	if [ $WIFIDUALBAND -eq 1  ]; then
+		uci -q set wireless.ath1.wps_flag=$WPS_SUPPORT
+		uci -q set wireless.ath1.wps_pbc=$WPS_SUPPORT
+	fi
+}
+
+conf_default() {	
+	case $OPMODE in
+	    0)
+	    	uci set network.lan.ifname='eth0 eth1'
+	    	uci set network.wan.ifname=''
+	    ;;
+	    *)
+	    	echo '- defconfig is ok -'
+	    ;;
+	esac
+
+	uci set network.lan.proto=$LAN_PROTO
+	uci set network.lan.ipaddr=$LAN_IPADDR
+	uci set network.lan.netmask=$LAN_NETMASK
+
+	uci set network_bridge.lan.ipaddr=$LAN_IPADDR
+	uci set network_bridge.lan.netmask=$LAN_NETMASK
+	uci set network_bridge.lan.gateway=$LAN_GATEWAY
+	uci set network_bridge.lan2.ipaddr=$LAN_IPADDR
+
+	uci set network_repeater.lan.ipaddr=$LAN_IPADDR
+	uci set network_repeater.lan.netmask=$LAN_NETMASK
+	uci set network_repeater.lan.gateway=$LAN_GATEWAY
+	uci set network_repeater.lan2.ipaddr=$LAN_IPADDR
+
+	uci set network_wisp.lan.ipaddr=$LAN_IPADDR
+	uci set network_wisp.lan.netmask=$LAN_NETMASK
+
+	uci set network_gateway.lan.ipaddr=$LAN_IPADDR
+	uci set network_gateway.lan.netmask=$LAN_NETMASK
+	
+	uci set dhcp.lan.ignore=$DHCPD_Disabled
+	uci set dhcp.lan.limit=$DHCPD_LIMIT
+	uci set dhcp.lan.start=$DHCPD_START
+	uci set dhcp.lan.dhcp_e=$DHCPD_END
+	
+	uci set network.wan.specialway=$SpecialWay
+	
+	wireless_init
+
+	uci commit
+}
+
+# the first boot
+[ -f /etc/config/restoredefault ] && {
+	echo "- defaut config -" 
+	conf_default
+
+	#cs_boot remove /etc/config/restoredefault
+	#rm -f /etc/config/restoredefault
+}
+
+# each upgrade
+# config restore again, the first is 80_mount_root
+[ -f /tmp/sysupgrade.tgz ] && {
+	echo "- config restore2 -" >> /tmp/zha
+	cd /
+	tar xzf /tmp/sysupgrade.tgz
+
+	#cs_boot delete /tmp/sysupgrade.tgz
+	#rm -f /tmp/sysupgrade.tgz
+	sync
+}
+
+exit 0

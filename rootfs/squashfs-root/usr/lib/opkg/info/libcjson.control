@@ -1,0 +1,13 @@
+Package: libcjson
+Version: 1
+Depends: libc, libcjson
+Provides: 
+Source: package/totolink/libcjson
+Section: TOTOLINK Properties
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: OpenWrt Developers Team <openwrt-devel@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 18354
+Description:  cJSON

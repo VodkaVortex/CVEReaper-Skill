@@ -1,0 +1,18 @@
+#!/bin/sh /etc/rc.common
+#
+# Copyright (C) 2009 OpenWrt.org
+#
+
+. /lib/ar71xx.sh
+. /lib/functions/uci-defaults.sh
+
+local board=$(ar71xx_board_name)
+
+[ ! -d /etc/defconfig/$board ] && exit 0
+
+for f in $( ls /etc/defconfig/$board ); do
+	cp /etc/defconfig/$board/$f /etc/config/
+done
+
+exit 0
+

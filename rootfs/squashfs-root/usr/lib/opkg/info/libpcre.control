@@ -1,0 +1,13 @@
+Package: libpcre
+Version: 8.11-2
+Depends: libc
+Provides: 
+Source: qca_2.7/feeds/packages/libs/pcre
+Section: libs
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: OpenWrt Developers Team <openwrt-devel@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 81787
+Description:  A Perl Compatible Regular Expression library

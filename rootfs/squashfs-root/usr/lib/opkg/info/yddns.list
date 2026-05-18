@@ -1,0 +1,7 @@
+/etc/init.d/yddnsd
+/usr/bin/yddnsd
+/usr/bin/ddns.sh
+/usr/bin/ddns-update.sh
+/usr/bin/noip2
+/usr/bin/yddns
+/etc/config/yddns

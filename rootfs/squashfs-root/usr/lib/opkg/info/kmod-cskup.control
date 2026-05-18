@@ -1,0 +1,13 @@
+Package: kmod-cskup
+Version: 3.3.8-1
+Depends: kernel (=3.3.8-1-2c82765d5082588930ac02de900aa287), gpio-button-hotplug
+Provides: 
+Source: package/totolink/cskup
+Section: kernel
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: hpluo
+Architecture: ar71xx
+Installed-Size: 746
+Description:  Kernel module to set up system status

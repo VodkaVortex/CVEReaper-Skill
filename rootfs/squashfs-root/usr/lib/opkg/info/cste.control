@@ -1,0 +1,13 @@
+Package: cste
+Version: 1
+Depends: libc, libcste, zlib, libcjson, libmosquitto, libubus, libjson-c, libubox, libblobmsg-json, libblobmsg-json, libpthread, libcares, librt, libuci, libm, libz
+Provides: 
+Source: package/totolink/cste
+Section: TOTOLINK Properties
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: OpenWrt Developers Team <openwrt-devel@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 115931
+Description:  CSTE

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+[ "$ACTION" = ifupdate -a -z "$IFUPDATE_ADDRESSES" -a -z "$IFUPDATE_DATA" ] && exit 0
+
+[ "$INTERFACE" = "wan" ] || exit 0
+
+echo initfw. > /dev/console
+lktos_fw initfw
+

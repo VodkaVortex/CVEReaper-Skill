@@ -1,0 +1,20 @@
+config iptv iptv
+	option iptvEnable	0
+	option iptvVer	0
+	option serviceType	5
+	option tagFlag	1
+	option iptvVid	10
+	option iptvPri	0		
+	option ipPhoneVid	30
+	option ipPhonePri	0
+	option internetVid	20	
+	option internetPri	0
+	option lan1	3
+	option lan2	3
+	option lan3	3		
+	option lan4	3
+	option igmpProxyEn	1
+	option igmpSnoopEn	1
+	option igmpVer	1
+
+	

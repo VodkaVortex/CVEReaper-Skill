@@ -1,0 +1,13 @@
+Package: mcproxy
+Version: 1.1.0.y-1
+Depends: libc, libpthread, libstdcpp
+Provides: 
+Source: qca_2.7/feeds/packages/net/mcproxy
+Section: net
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: OpenWrt Developers Team <openwrt-devel@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 166944
+Description:  mcproxy is a free & open source implementation of the IGMP/MLD proxy function (see  RFC 4605) for Linux systems.

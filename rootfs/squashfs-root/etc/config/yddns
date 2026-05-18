@@ -1,0 +1,6 @@
+config yddns 'main'
+       option enable '0'
+       option provider '3322.org'
+       option domain 'domain'
+       option account 'username'
+       option password 'password'

@@ -1,0 +1,182 @@
+#!/bin/sh
+# Copyright (C) 2006 OpenWrt.org
+
+
+iptvEnable=$(uci -q get iptv.iptv.iptvEnable)
+tagFlag=$(uci -q get iptv.iptv.tagFlag)
+
+lan1=$(uci -q get iptv.iptv.lan1)
+lan2=$(uci -q get iptv.iptv.lan2)
+lan3=$(uci -q get iptv.iptv.lan3)
+lan4=$(uci -q get iptv.iptv.lan4)
+
+
+iptvVid=$(uci -q get iptv.iptv.iptvVid)
+ipPhoneVid=$(uci -q get iptv.iptv.ipPhoneVid)
+internetVid=$(uci -q get iptv.iptv.internetVid)
+
+vlan_lan_ports="0t 1 2 3 4"
+
+
+if [ "$iptvEnable" = "1" ]; then
+
+	if [ "$tagFlag" = "1" ]; then
+	
+	
+		uci -q set network.iptv.enabled="1"
+		iptv_ifname=eth0.$iptvVid
+		uci -q set network.iptv.ifname="$iptv_ifname eth1.2"
+		
+		uci -q set network.ip_phone.enabled="1"
+		ip_phone_ifname=eth0.$ipPhoneVid
+		uci -q set network.ip_phone.ifname="$ip_phone_ifname eth1.3"
+	
+		wan_ifname=eth0.$internetVid
+		uci -q set network.wan.ifname="$wan_ifname"
+	
+		uci -q set network.lan.ifname=eth1.1
+
+		uci -q set network.vlan_iptv.device="eth1"
+		uci -q set network.vlan_iptv.vlan="2"
+			
+		uci -q set network.vlan_ip_phon.device="eth1"
+		uci -q set network.vlan_ip_phon.vlan="3"
+
+
+		if [ $lan1 -eq 1 ];then
+			ports_lan11=" 1 ";ports_lan12="";
+			vlan_lan_ports=${vlan_lan_ports/1/""};
+		elif [ $lan1 -eq 2 ]; then
+			ports_lan11="";ports_lan12=" 1 ";
+			vlan_lan_ports=${vlan_lan_ports/1/""};
+		fi
+
+		if [ $lan2 -eq 1 ];then
+			ports_lan21=" 2 ";ports_lan22="";
+			vlan_lan_ports=${vlan_lan_ports/2/""};
+		elif [ $lan2 -eq 2 ]; then
+			ports_lan21="";ports_lan22=" 2 ";
+			vlan_lan_ports=${vlan_lan_ports/2/""};
+		fi
+
+		if [ $lan3 -eq 1 ];then
+			ports_lan31=" 3 ";ports_lan32="";
+			vlan_lan_ports=${vlan_lan_ports/3/""};
+		elif [ $lan3 -eq 2 ]; then
+			ports_lan31="";ports_lan32=" 3 ";
+			vlan_lan_ports=${vlan_lan_ports/3/""};
+		fi
+
+		if [ $lan4 -eq 1 ];then
+			ports_lan41=" 4 ";ports_lan42="";
+			vlan_lan_ports=${vlan_lan_ports/4/""};
+		elif [ $lan4 -eq 2 ]; then
+			ports_lan41="";ports_lan42=" 4 ";
+			vlan_lan_ports=${vlan_lan_ports/4/""};
+		fi
+
+
+		ports_iptv="0t"$ports_lan11$ports_lan21$ports_lan31$ports_lan41
+		ports_ipphone="0t"$ports_lan12$ports_lan22$ports_lan32$ports_lan42
+	
+	
+		uci -q set network.vlan_iptv.ports="$ports_iptv"
+		uci -q set network.vlan_ip_phon.ports="$ports_ipphone"
+		uci -q set network.vlan_lan.ports="$vlan_lan_ports"
+	
+	elif [ "$tagFlag" = "0" ]; then
+	
+		uci -q set network.wan.ifname="br-iptv"
+		uci -q set network.lan.ifname=eth1.1
+		
+		uci -q set network.iptv.enabled="1"
+		uci -q set network.ip_phone.enabled="0"
+		uci -q set network.vlan_iptv.device=eth1
+
+		uci -q set network.vlan_ip_phon.device=""
+		uci -q set network.vlan_ip_phon.vlan=""
+		uci -q set network.vlan_ip_phon.ports=""
+		
+		if [ $lan1 -ne 1 -a $lan2 -ne 1 -a $lan3 -ne 1 -a $lan4 -ne 1 ];then
+			uci -q set network.vlan_iptv.vlan=$ipPhoneVid	
+			iptv_ifname=eth1.$ipPhoneVid	
+			uci -q set network.iptv.ifname="eth0 $iptv_ifname"			
+		else
+			uci -q set network.vlan_iptv.vlan=$iptvVid
+			iptv_ifname=eth1.$iptvVid	
+			uci -q set network.iptv.ifname="eth0 $iptv_ifname"	
+		fi	
+	
+		if [ $lan1 -eq 1 -o $lan1 -eq 2  ];then
+			ports_lan1=" 1 ";
+			vlan_lan_ports=${vlan_lan_ports/1/""};
+		else
+			ports_lan1="";
+		fi
+		
+		if [ $lan2 -eq 1 -o $lan2 -eq 2 ];then
+			ports_lan2=" 2 ";
+			vlan_lan_ports=${vlan_lan_ports/2/""};
+		else
+			ports_lan2="";
+		fi
+
+		if [ $lan3 -eq 1 -o $lan3 -eq 2 ];then
+			ports_lan3=" 3 ";
+			vlan_lan_ports=${vlan_lan_ports/3/""};
+		else
+			ports_lan3="";
+		fi
+		
+		
+		if [ $lan4 -eq 1 -o $lan4 -eq 2 ];then
+			ports_lan4=" 4 ";
+			vlan_lan_ports=${vlan_lan_ports/4/""};
+		else
+			ports_lan4="";
+		fi
+
+		
+		ports="0t"$ports_lan1$ports_lan2$ports_lan3$ports_lan4
+	
+		uci -q set network.vlan_iptv.ports="$ports"
+		uci -q set network.vlan_lan.ports="$vlan_lan_ports"
+				
+	fi
+	
+	uci commit
+	
+elif [ "$iptvEnable" = "0" ]; then
+	
+	uci -q set network.lan.ifname=eth1
+	uci -q set network.wan.ifname=eth0
+	
+	uci -q set network.vlan_lan.vlan=1
+	uci -q set network.vlan_lan.ports="0 1 2 3 4"
+
+	uci -q set network.iptv.enabled="0"
+	uci -q set network.ip_phone.enabled="0"
+	
+	
+	uci -q set network.vlan_iptv.device=""
+	uci -q set network.vlan_iptv.vlan=""
+	uci -q set network.vlan_iptv.ports=""
+	
+	uci -q set network.vlan_ip_phon.device=""
+	uci -q set network.vlan_ip_phon.vlan=""
+	uci -q set network.vlan_ip_phon.ports=""
+	
+	uci commit
+	
+fi	
+
+
+
+
+
+
+
+
+
+
+

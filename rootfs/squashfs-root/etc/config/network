@@ -1,0 +1,74 @@
+# Copyright (C) 2006 OpenWrt.org
+
+config interface loopback
+	option ifname	lo
+	option proto	static
+	option ipaddr	127.0.0.1
+	option netmask	255.0.0.0
+
+config interface 'lan'
+	option ifname 'eth1'
+	option force_link '1'
+	option type 'bridge'
+	option proto 'static'
+	option ipaddr '192.168.0.254'
+	option netmask '255.255.255.0'
+	option gateway '192.168.0.254'
+	option macaddr 'FF:FF:FF:FF:FF:FF'
+
+config interface 'wan'
+	option ifname 'eth0'
+	option proto 'dhcp'
+	option macaddr 'FF:FF:FF:FF:FF:FF'
+	option dmtu '1500'
+	option smtu '1500'
+	option pmtu '1492'
+ 	option mtu '1500'
+	option hostname 'TOTOLINK'
+	option peerdns '1'
+	option dns	''
+	option ppp_spectype '0'
+	option protos 'dhcp'
+	option mppe '0'
+	option mppc '1'
+	option lcpEchoEnable '1'
+
+config interface 'iptv'
+	option enabled '0' 
+	option ifname 'eth0.100 eth1.2' 
+	option force_link '1'
+	option type 'bridge'
+
+config interface 'ip_phone'
+	option enabled '0' 
+	option ifname 'eth0.200 eth1.3' 
+	option force_link '1' 
+	option type 'bridge'
+
+config switch
+    option name 'eth1'
+    option reset '1'
+    option enable_vlan '1'
+
+config switch_vlan vlan_lan
+    option device 'eth1'
+    option vlan '1'
+    option ports '0 1 2 3 4'
+
+config switch_vlan vlan_iptv
+#	option device 'eth1'      
+#	option vlan '2' 
+#	option ports '0t 4'
+
+config switch_vlan vlan_ip_phon
+#	option device 'eth1' 
+#	option vlan '3' 
+#	option ports '0t 3'
+
+config ethspeed ethspeed
+	option wan  '0'
+	option lan1 '0'
+	option lan2 '0'
+	option lan3 '0'
+	option lan4 '0'
+

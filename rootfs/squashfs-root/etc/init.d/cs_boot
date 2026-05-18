@@ -1,0 +1,272 @@
+#!/bin/sh /etc/rc.common
+# Copyright (c) 2013 The Linux Foundation. All rights reserved.
+# Copyright (C) 2006-2011 OpenWrt.org
+
+START=12
+
+. /lib/ar71xx.sh
+. /lib/functions/boot.sh
+. /lib/functions/system.sh
+. /lib/totolink_custom.sh
+
+ssid_sync_mac() {	
+	pre_ssid=${PRE_SSID}
+	suf_ssid_macnum=$SUF_SSID_MACNUM
+
+	mac_2g=$(echo $1 | tr '[a-z]' '[A-Z]')
+	mac_5g=$(echo $2 | tr '[a-z]' '[A-Z]')
+	
+	case $suf_ssid_macnum in
+	    6)
+	    suf_ssid_2G=`echo $mac_2g | awk -F ":" '{print $4""$5""$6 }'`
+	    ssid_2G=${pre_ssid}${suf_ssid_2G}
+
+	    if [ -n $mac_5g ]; then
+		    suf_ssid_5G=`echo $mac_5g | awk -F ":" '{print $4""$5""$6 }'`
+		    ssid_5G=${pre_ssid}${suf_ssid_5G}_5G
+	    fi
+	    ;;
+	    4)
+	    suf_ssid_2G=`echo $mac_2g | awk -F ":" '{print $5""$6 }'`
+	    ssid_2G=${pre_ssid}${suf_ssid_2G}
+	    
+	    if [ -n $mac_5g ]; then
+	    	suf_ssid_5G=`echo $mac_5g | awk -F ":" '{print $5""$6 }'`
+	    	ssid_5G=${pre_ssid}5G_${suf_ssid_5G}
+	    fi
+	    ;;
+	    *)
+	    ssid_2G=${pre_ssid}
+	    ssid_5G=${pre_ssid}
+	    ;;
+	esac
+	
+	if [ "$ONLY_5G" = "1" ]; then
+		[ -n $suf_ssid_2G ] && ssid_5G=${pre_ssid}5G_${suf_ssid_2G}
+
+		#support space
+		cmd=uci\ set\ wireless.ath0.ssid=\'${ssid_5G}\'
+		eval $cmd
+	else
+		cmd=uci\ set\ wireless.ath0.ssid=\'${ssid_2G}\'
+		eval $cmd
+		
+		if [ -n $mac_5g ]; then
+			cmd=uci\ set\ wireless.ath1.ssid=\'${ssid_5G}\'
+			eval $cmd
+		fi
+	fi	
+}
+
+do_mount_userdata_jffs2() {	
+	# user-data jffs2	
+	local mtd	
+	mtd=$(find_mtd_part user-data)	
+	[ -z "$mtd" ] && return	
+	#echo "mount user-data jffs2 start:"$mtd > /dev/console	
+	mkdir -p /userdata
+	mount $mtd /userdata -o noatime -t jffs2 || return	
+	#echo "mount user-data jffs2 success:"$mtd > /dev/console
+}
+
+start() {
+	do_mount_userdata_jffs2
+	
+	#add by hpluo 20170720 for fixed system halted
+	insmod /lib/modules/3.3.8/cskup.ko
+	
+	local mac_fix=0
+  	local lan_hwaddr wan_hwaddr w24g_hwaddr w58g_hwaddr
+
+	mtd=$(grep u-boot-env /proc/mtd | cut -d: -f1)
+	[ -z $mtd ] && return
+
+	base_hwaddr=$(grep lan_hwaddr /dev/$mtd | cut -d= -f2)
+	wlan_hwaddr=$(uci -q get wireless.wifi0.macaddr)
+
+	#ART 2G MAC, 0x1002=4098
+	art_hwaddr=$(mtd_get_mac_binary art 4098)
+
+	#echo $base_hwaddr,$art_hwaddr > /dev/console
+
+	#echo board_name:$(ar71xx_board_name) > /dev/console
+	case $(ar71xx_board_name) in
+		CSB811A |\
+		CSB813A)
+			#2.4G + 5G
+
+			if [ -z $base_hwaddr ]; then
+				echo " first bootup mac " > /dev/console
+				
+				base_hwaddr=$art_hwaddr
+
+				mac_fix=1
+			elif [ "$base_hwaddr" != "$art_hwaddr" ]; then
+				echo "user manual modify mac, from u-boot-env or art tool " > /dev/console
+				base_hwaddr=$art_hwaddr
+
+				#no support set mac from fw_setenv : Todo:[ "$base_hwaddr" != "$wlan_hwaddr" ]
+
+				mac_fix=1
+			fi
+
+			if [ $mac_fix -eq 1 ]; then
+				lan_hwaddr=$base_hwaddr
+				wan_hwaddr=$(macaddr_add "$base_hwaddr" 1)
+				w24g_hwaddr=$base_hwaddr
+				w58g_hwaddr=$(macaddr_add "$base_hwaddr" 4)
+				
+				fw_setenv lan_hwaddr $lan_hwaddr
+				fw_setenv wan_hwaddr $wan_hwaddr
+				fw_setenv w24g_hwaddr $w24g_hwaddr
+				fw_setenv w58g_hwaddr $w58g_hwaddr
+
+				uci -q set wireless.wifi0.macaddr=$w24g_hwaddr
+				uci -q set wireless.wifi1.macaddr=$w58g_hwaddr
+				uci -q set network.lan.macaddr=$lan_hwaddr
+				uci -q set network.wan.macaddr=$wan_hwaddr
+				uci -q set network.wan.defmacaddr=$wan_hwaddr
+
+				ssid_sync_mac $w24g_hwaddr $w58g_hwaddr
+			else
+				w24g_hwaddr=$(fw_printenv | grep w24g_hwaddr | cut -d= -f2)
+				w58g_hwaddr=$(fw_printenv | grep w58g_hwaddr | cut -d= -f2)
+				lan_hwaddr=$(fw_printenv | grep lan_hwaddr | cut -d= -f2)
+				wan_hwaddr=$(fw_printenv | grep wan_hwaddr | cut -d= -f2)
+			fi
+			;;
+		cp0016)
+			#5G Only
+			
+			#mac offset: 0x5006=20486
+			art_hwaddr=$(mtd_get_mac_binary art 20486)
+
+			#first startup
+			if [ -z $base_hwaddr ]; then
+				echo "first startup mac" > /dev/console
+				
+				base_hwaddr=$art_hwaddr
+				mac_fix=1
+			elif [ "$base_hwaddr" != "$art_hwaddr" ]; then
+				echo "user manual modify mac, from u-boot-env or art tool " > /dev/console
+				base_hwaddr=$art_hwaddr
+
+				#no support set mac from fw_setenv : Todo:[ "$base_hwaddr" != "$wlan_hwaddr" ]
+
+				mac_fix=1
+			fi
+
+			if [ $mac_fix -eq 1 ]; then
+				lan_hwaddr=$base_hwaddr
+				wan_hwaddr=$(macaddr_add "$base_hwaddr" 1)
+				w24g_hwaddr=$base_hwaddr
+				
+				fw_setenv lan_hwaddr $lan_hwaddr
+				fw_setenv wan_hwaddr $wan_hwaddr
+				fw_setenv w24g_hwaddr $w24g_hwaddr
+								
+				uci -q set wireless.wifi0.macaddr=$w24g_hwaddr
+				uci -q set network.lan.macaddr=$lan_hwaddr
+				uci -q set network.wan.macaddr=$wan_hwaddr
+				uci -q set network.wan.defmacaddr=$wan_hwaddr
+
+				ssid_sync_mac $w24g_hwaddr
+			else
+				w24g_hwaddr=$(fw_printenv | grep w24g_hwaddr | cut -d= -f2)
+				lan_hwaddr=$(fw_printenv | grep lan_hwaddr | cut -d= -f2)
+				wan_hwaddr=$(fw_printenv | grep wan_hwaddr | cut -d= -f2)
+			fi
+			;;
+		*)
+			#2.4G Only
+
+			#first startup
+			if [ -z $base_hwaddr ]; then				
+				base_hwaddr=$art_hwaddr
+				mac_fix=1
+			elif [ "$base_hwaddr" != "$art_hwaddr" ]; then
+				echo "user manual modify mac, from u-boot-env or art tool " > /dev/console
+				base_hwaddr=$art_hwaddr
+
+				#no support set mac from fw_setenv : Todo:[ "$base_hwaddr" != "$wlan_hwaddr" ]
+
+				mac_fix=1
+			fi
+
+			if [ $mac_fix -eq 1 ]; then
+				lan_hwaddr=$base_hwaddr
+				wan_hwaddr=$(macaddr_add "$base_hwaddr" 1)
+				w24g_hwaddr=$base_hwaddr
+				
+				fw_setenv lan_hwaddr $lan_hwaddr
+				fw_setenv wan_hwaddr $wan_hwaddr
+				fw_setenv w24g_hwaddr $w24g_hwaddr
+								
+				uci -q set wireless.wifi0.macaddr=$w24g_hwaddr
+				uci -q set network.lan.macaddr=$lan_hwaddr
+				uci -q set network.wan.macaddr=$wan_hwaddr
+				uci -q set network.wan.defmacaddr=$wan_hwaddr
+
+				ssid_sync_mac $w24g_hwaddr
+			else
+				w24g_hwaddr=$(fw_printenv | grep w24g_hwaddr | cut -d= -f2)
+				lan_hwaddr=$(fw_printenv | grep lan_hwaddr | cut -d= -f2)
+				wan_hwaddr=$(fw_printenv | grep wan_hwaddr | cut -d= -f2)
+			fi
+			;;
+	esac
+	if [ $mac_fix -eq 0 ]; then
+		if [[ -f /etc/config/restoredefault && ! -f /tmp/sysupgrade.tgz ]]; then
+            		ssid_sync_mac $w24g_hwaddr $w58g_hwaddr
+            		uci -q set wireless.wifi0.macaddr=$w24g_hwaddr
+            		[ $WIFIDUALBAND -eq 1 ] && uci -q set wireless.wifi1.macaddr=$w58g_hwaddr
+            		uci -q set network.lan.macaddr=$lan_hwaddr
+            		uci -q set network.wan.macaddr=$wan_hwaddr
+            		uci -q set network.wan.defmacaddr=$wan_hwaddr
+            		rm -f /etc/config/restoredefault
+	        elif [ -f /tmp/sysupgrade.tgz ];then
+	                  rm -f /tmp/sysupgrade.tgz
+	                  rm -f /etc/config/restoredefault
+	         fi
+         fi
+#	Automatic upgrade of detection marks	 
+	uci -q set system.main.forcedUpgrade=0
+	
+	softModel=$(uci -q get product.custom.softModel)
+	softModel_Rom=$(uci -c /rom/etc/config/ -q get product.custom.softModel)
+	if [ "$softModel" != "$softModel_Rom" ]; then
+		uci -q set product.custom.softModel="$softModel_Rom"
+	fi
+	
+	lcpEchoEnable=$(uci -q get network.wan.lcpEchoEnable)
+ 	[ -z "$lcpEchoEnable" ] && {
+ 		uci set network.wan.lcpEchoEnable=1
+ 	}	
+	
+	allservers=$(uci -q get dhcp.@dnsmasq[0].allservers)
+ 	[ -z "$allservers" ] && {
+ 		uci set dhcp.@dnsmasq[0].allservers=1
+ 	}	
+	
+	priDnsBackup=$(uci -q get product.custom.priDnsBackup)
+	priDnsBackup_Rom=$(uci -c /rom/etc/config/ -q get product.custom.priDnsBackup)
+ 	[ -z "$priDnsBackup" ] && {
+ 		uci set product.custom.priDnsBackup="$priDnsBackup_Rom"
+ 	}	
+	
+	secDnsBackup=$(uci -q get product.custom.secDnsBackup)
+	secDnsBackup_Rom=$(uci -c /rom/etc/config/ get -q product.custom.secDnsBackup)
+ 	[ -z "$priDnsBackup" ] && {
+ 		uci set product.custom.secDnsBackup="$secDnsBackup_Rom"
+ 	}	
+	
+	DomainAccess=$(uci -q get product.custom.DomainAccess)
+	DomainAccess_Rom=$(uci -c /rom/etc/config/ get -q product.custom.DomainAccess)
+ 	[ -z "$DomainAccess" ] && {
+ 		uci set product.custom.DomainAccess="$DomainAccess_Rom"
+ 	}	
+	
+	uci commit
+
+}
+

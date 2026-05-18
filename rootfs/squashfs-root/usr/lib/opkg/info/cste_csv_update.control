@@ -1,0 +1,13 @@
+Package: cste_csv_update
+Version: 1
+Depends: libc, cste, zlib, libcjson, libmosquitto, libubus, libjson-c, libubox, libblobmsg-json, libnl-tiny, libpthread, libcares, librt, libuci, libm, libz
+Provides: 
+Source: package/totolink/cste
+Section: TOTOLINK Properties
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: OpenWrt Developers Team <openwrt-devel@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 7181
+Description:  Support Cloud Update module

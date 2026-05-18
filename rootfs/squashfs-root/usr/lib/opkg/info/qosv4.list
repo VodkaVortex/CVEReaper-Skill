@@ -1,0 +1,4 @@
+/etc/config/qosv4
+/etc/init.d/qosv4
+/usr/bin/qosv4
+/etc/uci-defaults/luci-qosv4

@@ -1,0 +1,25 @@
+
+config 'qos_settings'
+	option 'UP' '12500'
+	option 'DOWN' '12500'
+	option 'UPLOADR' '2'
+	option 'DOWNLOADR' '2'
+	option 'UPLOADR2' '1'
+	option 'UPLOADC2' '5'
+	option 'DOWNLOADR2' '1'
+	option 'DOWNLOADC2' '2'
+	option 'qos_scheduler' '1'
+	option 'enable' '0'
+
+config 'qos_nolimit_ip'
+	option 'nolimit_ip' '192.168.1.1'
+	option 'nolimit_mac' '00:00:00:00:00'
+	option 'enable' '0'
+
+config 'transmission_limit'
+	option 'downlimit' '100'
+	option 'uplimit' '100'
+	option 'enable' '0'
+
+config 'connlimit'
+	option 'rules' ''

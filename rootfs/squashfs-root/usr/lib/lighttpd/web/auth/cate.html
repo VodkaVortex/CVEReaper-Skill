@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>美食</title>
+<style type="text/css">
+body{background:#2f4f4f;}
+.content{margin:5px auto;width:1000px;background:#fff;border:1px solid #dadada;}
+.content_main{margin:5px;background:#dadada;}
+.content_main ul{list-style-type:none;white-space:nowrap;padding:0;margin:0;}
+.content_main ul li{float:left;position:relative;}
+.content_main .content_main_top img{margin:0px;width:990px;height:350px;}
+.content_main .content_main_middle img{margin-top:3px;width:492px;height:250px;}
+.content_main .right{margin-left:5px;}
+.content_main .right{margin-left:5px;}
+.editTips{position:absolute;left:5px;top:5px;filter: alpha(opacity = 30);-moz-opacity:0.3; opacity: 0.3;background:#ffffff;  }
+.hid{display:none;}
+</style>
+<script type="text/javascript">
+var cate1="/cate/cate1.png";
+var cate2="/cate/cate2.png";
+var cate3="/cate/cate3.png";
+var cate4="/cate/cate4.png";
+var cate5="/cate/cate5.png";
+var choosePath="";
+var edit=0;
+try{
+	edit=parent.editAds;
+}catch(e){
+	edit=0;
+}
+var Count =5;
+var Imgs = new Array(Count);
+for(var i=0;i<Imgs.length;i++){
+	Imgs[i]=new Image();
+}
+Imgs[0].src=cate1;
+Imgs[1].src=cate2;
+Imgs[2].src=cate3;
+Imgs[3].src=cate4;
+Imgs[4].src=cate5;
+
+var $=function(id){
+	return document.getElementById(id);
+}
+function load_settings(){
+	var imgId="";
+	for(var i=0;i<Imgs.length;i++){
+		imgId="img"+(i-0+1);
+		$(imgId).src = Imgs[i].src;
+	}
+	editStatus();
+}
+function loadNewImg(imgpath){
+	
+	imgId="img"+i;
+	$(imgId).src = imgPath;
+}
+function changeImg(imgId){
+	if(edit==1){
+		if(imgId ==1){
+			//window.open("");
+			choosePath=showModalDialog('/usb/http_files.asp','Storage_Add','dialogWidth:650px;dialogHeight:530px;center:yes;help:no;resizable:no;status:no'); 
+			cate1="/media"+choosePath;
+			//$("img1").src = cate1;
+			parent.addImgPath("cate1",cate1);
+		}else if(imgId ==2){
+			choosePath=showModalDialog('/usb/http_files.asp','Storage_Add','dialogWidth:650px;dialogHeight:530px;center:yes;help:no;resizable:no;status:no'); 
+			cate2="/media"+choosePath;
+			//$("img2").src = cate2;
+			parent.addImgPath("cate2",cate2);
+		}else if(imgId ==3){
+			choosePath=showModalDialog('/usb/http_files.asp','Storage_Add','dialogWidth:650px;dialogHeight:530px;center:yes;help:no;resizable:no;status:no'); 
+			cate3="/media"+choosePath;
+			//$("img3").src = cate3;
+			parent.addImgPath("cate3",cate3);
+		}else if(imgId ==4){
+			choosePath=showModalDialog('/usb/http_files.asp','Storage_Add','dialogWidth:650px;dialogHeight:530px;center:yes;help:no;resizable:no;status:no'); 
+			cate4="/media"+choosePath;
+			//$("img4").src = cate4;
+			parent.addImgPath("cate4",cate4);
+		}else if(imgId ==5){
+			choosePath=showModalDialog('/usb/http_files.asp','Storage_Add','dialogWidth:650px;dialogHeight:530px;center:yes;help:no;resizable:no;status:no'); 
+			cate5="/media"+choosePath;
+			//$("img5").src = cate5;
+			parent.addImgPath("cate5",cate5);
+		}
+	}else{
+		return false;
+	}
+}
+function editStatus(){
+	var tipsNodes="";
+	tipsNodes=document.getElementsByName("editTips");
+	if(edit==1){
+		for(var i=0;i<tipsNodes.length;i++){
+			tipsNodes[i].className="editTips"
+		}
+	}else{
+		for(var i=0;i<tipsNodes.length;i++){
+			tipsNodes[i].className="editTips hid"
+		}
+	}
+}
+</script>
+</head>
+<body onload="load_settings();">
+<div class="content" >
+	<div class="content_main">
+	    <div class="content_main_top">
+			<ul>
+			<li>
+				<div class="">
+					<span class=""><a href="#" title=""  onclick="changeImg(1);"><img  id="img1" src="" alt="" /></a></span>
+					<span class="editTips hid" name="editTips">whidth:990px height:350px</span>
+				</div> 
+			</li>
+			</ul>
+        </div>
+    	<div class="content_main_middle">
+			<ul>
+			<li>
+				<div class="left">
+					<span class=""><a href="#" title="" onclick="changeImg(2);"><img id="img2" src="" alt="" /></a></span>
+					<span class=""  name="editTips">whidth:492px height:250px</span>
+				</div>
+			</li>  
+			<li>
+				<div class="right">
+					<span class=""><a href="#" title="" onclick="changeImg(3);"><img id="img3" src="" alt="" /></a></span>
+					<span class=""  name="editTips">whidth:492px height:250px</span>
+				</div>
+			</li>
+			</ul>
+        </div>
+		<div class="content_main_middle">
+			<ul>
+			<li>
+				<div class="left">
+					<span class=""><a href="#" title="" onclick="changeImg(4);"><img id="img4" src="" alt="" /></a></span>
+					<span class="" name="editTips">whidth:492px height:250px</span>
+				</div>
+			</li> 
+			<li>			
+				<div class="right">
+					<span class=""><a href="#" title="" onclick="changeImg(5);"><img id="img5" src="" alt="" /></a></span>
+					<span class="" name="editTips">whidth:492px height:250px</span>
+				</div>
+			</li>
+			</ul>
+        </div>
+        <!--more-->
+		<div style="clear:both;zoom:1;"></div>
+    </div>
+</div>
+</body>
+</html>

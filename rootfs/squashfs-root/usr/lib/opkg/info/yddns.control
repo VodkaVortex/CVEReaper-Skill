@@ -1,0 +1,13 @@
+Package: yddns
+Version: 1
+Depends: libc, libcste, libuci, libmosquitto, zlib, libcjson
+Provides: 
+Source: package/totolink/yddns
+Section: TOTOLINK Properties
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: OpenWrt Developers Team <openwrt-devel@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 35738
+Description:  An Dynamic Domain Name Client program

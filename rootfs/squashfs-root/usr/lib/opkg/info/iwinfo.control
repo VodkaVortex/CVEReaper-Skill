@@ -1,0 +1,13 @@
+Package: iwinfo
+Version: 36
+Depends: libc, libiwinfo
+Provides: 
+Source: package/iwinfo
+Section: utils
+Status: unknown ok not-installed
+Essential: no
+Priority: optional
+Maintainer: Jo-Philipp Wich <xm@subsignal.org>
+Architecture: ar71xx
+Installed-Size: 6091
+Description:  Command line frontend for the wireless information library.
