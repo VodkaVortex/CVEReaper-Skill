@@ -1,6 +1,6 @@
 # CVEReaper-Skill
 
-<p align="center">   <img src="https://img.shields.io/badge/IoTReaper-2.0-red.svg" alt="IoTReaper 2.0">   <img src="https://img.shields.io/badge/arch-MIPS32-blue.svg" alt="MIPS32">   <img src="https://img.shields.io/badge/tools-IDA%20MCP%20%7C%20angr%20%7C%20SaTC-orange.svg" alt="Tools">   <img src="https://img.shields.io/badge/targets-D--Link%20%7C%20TP--Link%20%7C%20Netgear-green.svg" alt="Targets"> </p>
+<p align="center">        <img src="https://img.shields.io/badge/tools-IDA%20MCP%20%7C%20angr%20%7C%20SaTC-orange.svg" alt="Tools">   <img src="https://img.shields.io/badge/targets-D--Link%20%7C%20TP--Link%20%7C%20Netgear-green.svg" alt="Targets"> </p>
 
 A Claude skill for automated end-to-end 1-day vulnerability discovery in extracted IoT firmware filesystems. Given an unpacked firmware root, CVEReaper orchestrates attack surface mapping, CVE knowledge base correlation, triage risk scoring, SaTC-style frontend-to-backend parameter tracing, and angr symbolic execution verification — outputting a structured Markdown vulnerability report.
 
@@ -83,8 +83,6 @@ Extracted Firmware FS
 | Python 3 + `sqlite3` + `requests`                        | CVE KB bootstrap (NVD API v2)                      |
 | `binwalk`                                                | Firmware extraction (pre-skill, not automated)     |
 | `strings`, `file`, `find`                                | Attack surface mapping (Phase 1)                   |
-
-**IDA MCP server path (default):** `~/VscodeProjects/ida-mcp-main`
 
 ------
 
